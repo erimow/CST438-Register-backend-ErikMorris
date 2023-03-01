@@ -64,6 +64,7 @@ public class ScheduleController {
 	}
 	
 
+
 	
 	@PostMapping("/schedule")
 	@Transactional
@@ -96,6 +97,7 @@ public class ScheduleController {
 		}
 		
 	}
+	
 	
 	@DeleteMapping("/schedule/{enrollment_id}")
 	@Transactional
