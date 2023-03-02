@@ -1,8 +1,11 @@
 package com.cst438.controller;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,18 +33,28 @@ public class StudentController
 	@Autowired
 	GradebookService gradebookService;
 	
-	//@GetMapping("/student/")
-	public Student getStudent() {
-		
+	@GetMapping("/student/{email}")
+	public Student getStudent(@PathVariable("email") String email) 
+	{
+		System.out.println("Searching for "+email);
+		//Student result = new Student();
+		Student stud = studentRepository.findByEmail(email);
+		if (stud != null)
+		{
+			//stud.setEmail(email)
+			//ArrayList<Student> studInfo = new ArrayList<>();
+			//studInfo
+			return stud;
+		}
 		return null;
 	}
 	
 	@PostMapping("/student/add")
 	@Transactional
-	public Student addStudent( @RequestParam("email") String email, @RequestParam("name") String name)
+	public Student addStudent( @RequestParam("email") String email, @RequestParam("name") String name, @RequestParam("id") int id)
 	{
 		System.out.println("/student/add called.");
-		if (email.equals(studentRepository.findByEmail(email).getEmail()))
+		if(studentRepository.findByEmail(email)==null)
 		{
 			return null;
 		}
@@ -50,13 +63,16 @@ public class StudentController
 			Student newStud = new Student();
 			newStud.setName(name);
 			newStud.setName(email);
-			//newStud.setStudent_id();
+			newStud.setStudent_id(id);
 			System.out.println(name);
+			studentRepository.save(newStud);
 			return newStud;
 		}
 		
 		
 	}
+	
+	
 	
 
 }
